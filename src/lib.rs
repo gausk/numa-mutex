@@ -125,7 +125,8 @@ impl<T> QueueMutex<T> {
         // SAFETY:
         // Node is pinned and stable in memory.
         //
-        let node_ptr = unsafe { Pin::into_inner_unchecked(node) as *mut WaitNode };
+        let boxed = unsafe { Pin::into_inner_unchecked(node) };
+        let node_ptr = Box::into_raw(boxed);
 
         //
         // Join queue.
